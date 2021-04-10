@@ -149,6 +149,7 @@ void MyAntiVirusDlg::LoadImageProcess()
 
 bool MyAntiVirusDlg::refreshListPT()
 {
+	deleteallcheck();
 	m_List_File.DeleteAllItems();
 	for (auto& it : ProtectProcess)
 	{
@@ -159,8 +160,13 @@ bool MyAntiVirusDlg::refreshListPT()
 		m_List_File.SetItemText(nIndex, 2, it.szExeFilePath);
 		m_List_File.SetItemText(nIndex, 3, it.FileMd5);
 	}
-	m_List_File.SetItemState(m_List_File.GetItemCount() - 1, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-	m_List_File.SetFocus();
+	if (m_List_File.GetItemCount() != 0)
+	{
+		m_List_File.SetItemState(m_List_File.GetItemCount() - 1, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		m_List_File.SetFocus();
+		updateallcheck(ProtectProcess[m_List_File.GetItemCount() - 1]);
+	}
+
 	return true;
 }
 
@@ -184,7 +190,34 @@ void MyAntiVirusDlg::updateallcheck(MyProtectProcess &pt)
 	{
 		m_Check_Cloud.SetCheck(1);
 	}
-	
+	if (pt.states[antidebug])
+	{
+		m_check_antidebug.SetCheck(1);
+	}
+	if (pt.states[antiinject])
+	{
+		m_check_antiinject.SetCheck(1);
+	}
+	if (pt.states[protectthread])
+	{
+		m_check_protectThread.SetCheck(1);
+	}
+	if (pt.states[k_handlept])
+	{
+		m_Check_End.SetCheck(1);
+	}
+	if (pt.states[k_mmpt])
+	{
+		m_check_mmprotect.SetCheck(1);
+	}
+	if (pt.states[k_antidebug])
+	{
+		m_check_kernel_antidebug.SetCheck(1);
+	}
+	if (pt.states[k_hideprocess])
+	{
+		m_check_hideprocess.SetCheck(1);
+	}
 	SetDlgItemText(IDC_STATIC_PATH, TEXT("等待配置"));
 }
 
@@ -362,13 +395,30 @@ void MyAntiVirusDlg::OnBnClickedButton3()
 	nMyVirusLibDlg.DoModal();
 }
 
-//清除单个病毒文件
+//取消单个进程的保护
 void MyAntiVirusDlg::OnClearonece()
 {
-	CString nFileName;
-	nFileName = m_List_File.GetItemText(m_List_File.GetSelectionEx(), 1);
-	//DeleteFile(nFileName);
-	m_List_File.DeleteItem(m_List_File.GetSelectionEx());
+	int pid = _ttoi(m_List_File.GetItemText(m_List_File.GetSelectionEx(), 1));
+	for (auto it = ProtectProcess.begin(); it < ProtectProcess.end();it++) {
+		if (it->th32ProcessID == pid)
+		{
+			
+			if(!it->clearallprotect())
+				MessageBox(TEXT("protect close fail"));
+			ProtectProcess.erase(it);
+			break;
+		}
+	}
+	refreshListPT();
+	//取消备选区选择
+	for (int i = 0; i < m_List_Process.GetItemCount()-1; i++)
+	{
+		if (pid == _ttoi(m_List_Process.GetItemText(i, 1)))
+		{
+			m_List_Process.SetCheck(i, 0);
+			break;
+		}
+	}
 }
 
 //清除所有病毒文件
@@ -462,6 +512,13 @@ void MyAntiVirusDlg::ScanProcess()
 		m_List_Process.SetItemText(nIndex, 1, nTaskList.th32ProcessID[i]);
 		m_List_Process.SetItemText(nIndex, 2, nTaskList.szExeFilePath[i]);
 		m_List_Process.SetItemText(nIndex, 3, nFileMd5);
+		for (auto& it : ProtectProcess)
+		{
+			if (it.th32ProcessID == nTaskList.th32ProcessID[i])
+			{
+				m_List_Process.SetCheck(nIndex, 1);
+			}
+		}
 		m_List_Process.SendMessage(LVM_SCROLL, 0, 100);
 	}
 	ClearTaskList(nTaskList);
@@ -482,6 +539,7 @@ void MyAntiVirusDlg::OnBnClickedButton7()
 
 void MyAntiVirusDlg::OnBnClickedCheck1()
 {
+	MessageBox(TEXT("neihebaohu"));
 	AfxMessageBox(_T("此功能暂未实现，请更新后使用"));
 }
 
@@ -512,6 +570,15 @@ void MyAntiVirusDlg::OnLvnItemchangedListProcess(NMHDR* pNMHDR, LRESULT* pResult
 		&& (pNMLV->uNewState & INDEXTOSTATEIMAGEMASK(2)) /* new state : checked */
 		)
 	{
+		//排除重复项
+		for (vector<MyProtectProcess>::iterator it = ProtectProcess.begin(); it < ProtectProcess.end(); it++)
+		{
+			if (it->th32ProcessID == _ttoi(m_List_Process.GetItemText(pNMLV->iItem, 1)) && \
+				it->szExeFile == m_List_Process.GetItemText(pNMLV->iItem,0))
+			{
+				return;
+			}
+		}
 		mychoiseitem.Format(L"选中ITEM%d", pNMLV->iItem);
 		//选中一个进程需要保护
 		MyProtectProcess pt = MyProtectProcess(m_List_Process.GetItemText(pNMLV->iItem, 0), \
@@ -534,6 +601,7 @@ void MyAntiVirusDlg::OnLvnItemchangedListProcess(NMHDR* pNMHDR, LRESULT* pResult
 		{
 			if (it->th32ProcessID == _ttoi(m_List_Process.GetItemText(pNMLV->iItem, 1)))
 			{
+				it->clearallprotect();
 				ProtectProcess.erase(it);
 				break;
 			}
@@ -561,13 +629,12 @@ void MyAntiVirusDlg::OnNMClickListFile(NMHDR* pNMHDR, LRESULT* pResult)
 		{
 			if (it.th32ProcessID == pid)
 			{
-
+				updateallcheck(it);
 			}
 		}
 	}
 	tmp.Format(L"%d", pNMItemActivate->iItem);
 	MessageBox(tmp);
-
 	*pResult = 0;
 }
 

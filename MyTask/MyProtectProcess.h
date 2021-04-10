@@ -44,5 +44,25 @@ public:
 		FileMd5 = _FileMd5;
 		th32ProcessID = _PID;
 	}
+	bool clearprotect(int ptmask)
+	{
+		return true;
+	}
+	bool clearallprotect()
+	{
+		for (int i=0;i<8;i++)
+		{
+			if (states[i])
+			{
+				if(!clearprotect(i))
+					return false;
+			}
+		}
+		return true;
+	}
+	~MyProtectProcess()
+	{
+		//MessageBox(nullptr,TEXT(""),TEXT("destory"),0);
+	}
 };
 

@@ -399,7 +399,7 @@ void MyAntiVirusDlg::OnBnClickedButton3()
 void MyAntiVirusDlg::OnClearonece()
 {
 	int pid = _ttoi(m_List_File.GetItemText(m_List_File.GetSelectionEx(), 1));
-	for (auto it = ProtectProcess.begin(); it < ProtectProcess.end();it++) {
+	for (auto it = ProtectProcess.begin(); it != ProtectProcess.end();it++) {
 		if (it->th32ProcessID == pid)
 		{
 			
@@ -411,7 +411,7 @@ void MyAntiVirusDlg::OnClearonece()
 	}
 	refreshListPT();
 	//取消备选区选择
-	for (int i = 0; i < m_List_Process.GetItemCount()-1; i++)
+	for (int i = 0; i < m_List_Process.GetItemCount(); i++)
 	{
 		if (pid == _ttoi(m_List_Process.GetItemText(i, 1)))
 		{
@@ -429,9 +429,7 @@ void MyAntiVirusDlg::OnClearall()
 	nCount = m_List_File.GetItemCount();
 	for (DWORD i =0 ; i < nCount ; i++)
 	{
-		nFileName = m_List_File.GetItemText(i, 1);
-		//DeleteFile(nFileName);
-		m_List_File.DeleteItem(i);
+		OnClearonece();
 	}
 
 }

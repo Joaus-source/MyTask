@@ -73,6 +73,12 @@ BEGIN_MESSAGE_MAP(MyAntiVirusDlg, CDialogEx)
 //	ON_NOTIFY(NM_SETFOCUS, IDC_LIST_FILE, &MyAntiVirusDlg::OnNMSetfocusListFile)
 //ON_NOTIFY(NM_CUSTOMDRAW, IDC_LIST_PROCESS, &MyAntiVirusDlg::OnNMCustomdrawListProcess)
 ON_BN_CLICKED(IDC_CHECK7, &MyAntiVirusDlg::OnBnClickedCheck7)
+ON_BN_CLICKED(IDC_CHECK9, &MyAntiVirusDlg::OnBnClickedCheck9)
+ON_BN_CLICKED(IDC_CHECK10, &MyAntiVirusDlg::OnBnClickedCheck10)
+ON_BN_CLICKED(IDC_CHECK8, &MyAntiVirusDlg::OnBnClickedCheck8)
+ON_BN_CLICKED(IDC_CHECK2, &MyAntiVirusDlg::OnBnClickedCheck2)
+ON_BN_CLICKED(IDC_CHECK4, &MyAntiVirusDlg::OnBnClickedCheck4)
+ON_BN_CLICKED(IDC_CHECK6, &MyAntiVirusDlg::OnBnClickedCheck6)
 END_MESSAGE_MAP()
 
 void MyAntiVirusDlg::AddEditData(CEdit &m_Edit_Contral, CString &nData)
@@ -537,8 +543,14 @@ void MyAntiVirusDlg::OnBnClickedButton7()
 
 void MyAntiVirusDlg::OnBnClickedCheck1()
 {
-	MessageBox(TEXT("neihebaohu"));
-	AfxMessageBox(_T("此功能暂未实现，请更新后使用"));
+	if (changestate(m_Check_Cloud, k_handlept))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
 }
 
 //清理内存
@@ -716,6 +728,99 @@ void MyAntiVirusDlg::OnNMClickListFile(NMHDR* pNMHDR, LRESULT* pResult)
 
 
 void MyAntiVirusDlg::OnBnClickedCheck7()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+}
+
+
+void MyAntiVirusDlg::OnBnClickedCheck9()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	if (changestate(m_check_kernel_antidebug,k_antidebug))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
+}
+bool MyAntiVirusDlg::changestate(CButton &button, int ptmask)
+{
+	//获取当前选中的进程的pid
+	POSITION ps = m_List_File.GetFirstSelectedItemPosition();
+	int nIndex = m_List_File.GetNextSelectedItem(ps);
+	int pid = _ttoi(m_List_File.GetItemText(nIndex, 1));
+	bool bret = false;
+	for (auto& pt : ProtectProcess)
+	{
+		if (pt.th32ProcessID == pid)
+		{
+			if (pt.states[ptmask])
+			{
+				bret = pt.clearprotect(ptmask);
+				if (!bret)
+				{
+					button.SetCheck(1);
+				}
+			}
+			else
+			{
+				bret = pt.openprotect(ptmask);
+				if (!bret)
+				{
+					button.SetCheck(0);
+				}
+			}
+		}
+	}
+	return bret;
+}
+
+void MyAntiVirusDlg::OnBnClickedCheck10()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (changestate(m_check_hideprocess, k_hideprocess))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
+}
+
+
+void MyAntiVirusDlg::OnBnClickedCheck8()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	if (changestate(m_check_mmprotect, k_mmpt))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
+}
+
+
+void MyAntiVirusDlg::OnBnClickedCheck2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void MyAntiVirusDlg::OnBnClickedCheck4()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void MyAntiVirusDlg::OnBnClickedCheck6()
 {
 	// TODO: 在此添加控件通知处理程序代码
 }

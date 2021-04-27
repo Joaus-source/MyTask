@@ -107,6 +107,18 @@
     <ClInclude Include="MyProtectProcess.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CheatMsg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dbg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DriverOperation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnDocoumentApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClistCtrlEx.cpp">
@@ -166,6 +178,15 @@
     <ClCompile Include="MyProtectProcess.cpp" />
     <ClCompile Include="ProtectProcess.cpp">
       <Filter>病毒/进程扫描</Filter>
+    </ClCompile>
+    <ClCompile Include="CheatMsg.c">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dbg.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DriverOperation.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

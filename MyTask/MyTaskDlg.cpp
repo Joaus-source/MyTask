@@ -13,7 +13,7 @@
 #include "MyUnistallDlg.h"
 #include "MyStartupDlg.h"
 #include <windows.h>
-
+#include "DriverOperation.h"
 DWORD g_Pid = 0;
 BOOL g_OpenTraffic = FALSE;
 
@@ -317,6 +317,24 @@ BOOL CMyTaskDlg::OnInitDialog()
 
 void CMyTaskDlg::OnClose()
 {
+	//MessageBox(_T("exit!"));
+	UnLoadDriver();
+	 if(m_PWindowsDlg != nullptr)
+		 delete m_PWindowsDlg;
+	 if (m_PUnistallDlg == nullptr)
+		 delete m_PUnistallDlg;
+	 if (m_PStartupDlg == nullptr)
+		 delete m_PStartupDlg;
+	 if (m_PAntiVirusDlg == nullptr)
+		 delete m_PAntiVirusDlg;
+	 if (m_PClearUpDlg == nullptr)
+		 delete m_PClearUpDlg;
+	 m_PWindowsDlg = nullptr;
+	 m_PUnistallDlg = nullptr;
+	 m_PStartupDlg = nullptr;
+	 m_PAntiVirusDlg = nullptr;
+	 m_PClearUpDlg = nullptr;
+	Sleep(1000);
 	UnHookTaskmgr();
 	CDialogEx::OnClose();
 }

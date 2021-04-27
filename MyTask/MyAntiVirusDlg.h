@@ -81,6 +81,7 @@ public:
 	bool refreshListPT();
 	void deleteallcheck();
 	void updateallcheck(MyProtectProcess &pt);
+	bool changestate(CButton &button,int ptmask);
 	afx_msg void OnBnClickedButton8();
 	afx_msg void OnBnClickedCheck1();
 
@@ -95,4 +96,10 @@ public:
 	CButton m_check_mmprotect;
 	CButton m_check_kernel_antidebug;
 	CButton m_check_hideprocess;
+	afx_msg void OnBnClickedCheck9();
+	afx_msg void OnBnClickedCheck10();
+	afx_msg void OnBnClickedCheck8();
+	afx_msg void OnBnClickedCheck2();
+	afx_msg void OnBnClickedCheck4();
+	afx_msg void OnBnClickedCheck6();
 };

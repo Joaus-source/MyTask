@@ -201,7 +201,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAddVirus.h" />
+    <ClInclude Include="CheatMsg.h" />
     <ClInclude Include="ClistCtrlEx.h" />
+    <ClInclude Include="Dbg.h" />
+    <ClInclude Include="DriverOperation.h" />
     <ClInclude Include="LoadVirusLib.h" />
     <ClInclude Include="MD5_FILE.h" />
     <ClInclude Include="MyAntiVirusDlg.h" />
@@ -222,10 +225,14 @@
     <ClInclude Include="StatusBarEx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UnDocoumentApi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAddVirus.cpp" />
+    <ClCompile Include="CheatMsg.c" />
     <ClCompile Include="ClistCtrlEx.cpp" />
+    <ClCompile Include="Dbg.cpp" />
+    <ClCompile Include="DriverOperation.cpp" />
     <ClCompile Include="LoadVirusLib.cpp" />
     <ClCompile Include="MD5_FILE.cpp" />
     <ClCompile Include="MyAntiVirusDlg.cpp" />

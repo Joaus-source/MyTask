@@ -318,7 +318,11 @@ BOOL CMyTaskDlg::OnInitDialog()
 void CMyTaskDlg::OnClose()
 {
 	//MessageBox(_T("exit!"));
-	UnLoadDriver();
+	if (g_DriverInit)
+	{
+		UnLoadDriver();
+	}
+
 	 if(m_PWindowsDlg != nullptr)
 		 delete m_PWindowsDlg;
 	 if (m_PUnistallDlg == nullptr)

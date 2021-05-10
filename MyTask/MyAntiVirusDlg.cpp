@@ -730,7 +730,14 @@ void MyAntiVirusDlg::OnNMClickListFile(NMHDR* pNMHDR, LRESULT* pResult)
 void MyAntiVirusDlg::OnBnClickedCheck7()
 {
 	// TODO: 在此添加控件通知处理程序代码
-
+	if (changestate(m_check_protectThread, protectthread))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
 }
 
 
@@ -811,16 +818,40 @@ void MyAntiVirusDlg::OnBnClickedCheck8()
 void MyAntiVirusDlg::OnBnClickedCheck2()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	if (changestate(m_Check_End, dataprotect))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
 }
 
 
 void MyAntiVirusDlg::OnBnClickedCheck4()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	if (changestate(m_check_antidebug, antidebug))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
 }
 
 
 void MyAntiVirusDlg::OnBnClickedCheck6()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	if (changestate(m_check_antiinject, antiinject))
+	{
+		m_Static_Path.SetWindowTextW(_T("成功！"));
+	}
+	else
+	{
+		m_Static_Path.SetWindowTextW(_T("失败！"));
+	}
 }

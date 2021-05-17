@@ -325,13 +325,13 @@ void CMyTaskDlg::OnClose()
 
 	 if(m_PWindowsDlg != nullptr)
 		 delete m_PWindowsDlg;
-	 if (m_PUnistallDlg == nullptr)
+	 if (m_PUnistallDlg != nullptr)
 		 delete m_PUnistallDlg;
-	 if (m_PStartupDlg == nullptr)
+	 if (m_PStartupDlg != nullptr)
 		 delete m_PStartupDlg;
-	 if (m_PAntiVirusDlg == nullptr)
+	 if (m_PAntiVirusDlg != nullptr)
 		 delete m_PAntiVirusDlg;
-	 if (m_PClearUpDlg == nullptr)
+	 if (m_PClearUpDlg != nullptr)
 		 delete m_PClearUpDlg;
 	 m_PWindowsDlg = nullptr;
 	 m_PUnistallDlg = nullptr;
